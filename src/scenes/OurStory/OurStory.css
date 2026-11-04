@@ -57,6 +57,14 @@
   color: var(--ivory);
 }
 .story__subtitle span { display: block; }
+/* Телефон: подпись стоит на светлом платье. Затемнение привязано к видимой области и начинается ниже лиц */
+@media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  .story__floor {
+    height: calc(var(--vh-large) - var(--vh-small) + var(--svh) * 56);
+    background: linear-gradient(180deg, transparent, rgb(11 11 11 / 0.88) calc(var(--svh) * 30), rgb(11 11 11 / 0.95));
+  }
+  .story__sign, .story__subtitle { text-shadow: 0 1px 12px rgb(0 0 0 / 0.7); }
+}
 
 /* Статичный режим */
 .is-static .story { min-height: var(--vh-small); color: var(--ivory); padding: 16vh var(--pad) 8vh; display: flex; flex-direction: column; justify-content: flex-end; }

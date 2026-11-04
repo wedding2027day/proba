@@ -98,6 +98,7 @@ export function Invitation({ active, greetingName, reduced, getStage, onOpened }
     if (openingRef.current) return; // защита от повторных нажатий
     openingRef.current = true;
     setOpening(true);
+    root.current?.scrollTo(0, 0); // для браузеров без overflow: clip
 
     const stage = getStage();
     if (reduced || !stage) {
@@ -118,6 +119,13 @@ export function Invitation({ active, greetingName, reduced, getStage, onOpened }
       const vh = window.innerHeight;
       // «Камера» подъезжает: насколько увеличить карточку, чтобы она заняла центр экрана.
       const C = Math.min((vw * 0.86) / cw, (vh * 0.8) / ch, 1.55);
+
+      // На телефоне конверт стоит выше центра: карточка приезжает точно к именам следующей сцены, без скачка.
+      const joiner = stage.querySelector('.story__joiner')?.getBoundingClientRect();
+      const cardBox = card.getBoundingClientRect();
+      const alignY = vw / vh < 0.8 && joiner?.height
+        ? joiner.top + joiner.height / 2 - (cardBox.top + cardBox.height / 2)
+        : 0;
 
       // Имена на карточке совпадают по размеру с именами на старте следующей сцены.
       const n0 = film.namesBase / C;
@@ -188,7 +196,7 @@ export function Invitation({ active, greetingName, reduced, getStage, onOpened }
       tl.to(q('.env__dim'), { opacity: 0.85, duration: 0.8 }, away);
       tl.to(q('.env__cast'), { opacity: 0, y: shellDrop * 0.6, duration: 0.8, ease: 'power2.in' }, away);
       tl.to(tilt, { rotationX: 0, duration: 1.15, ease: 'power2.inOut' }, away);
-      tl.to(card, { y: 0, rotation: 0, scale: C, duration: 1.15, ease: 'power2.inOut' }, away);
+      tl.to(card, { y: alignY, rotation: 0, scale: C, duration: 1.15, ease: 'power2.inOut' }, away);
       tl.to(q('.inv__light'), { opacity: 0, duration: 0.8 }, away);
 
       // 6. Поверхность карточки становится фоном следующей сцены.

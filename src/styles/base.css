@@ -17,6 +17,8 @@
 
   --vh-small: 100vh;
   --vh-large: 100vh;
+  /* Один процент видимой высоты: на телефоне vh равен высоте БЕЗ панелей Safari, поэтому раскладку считаем от неё */
+  --svh: calc(var(--vh-small) / 100);
   --pad: clamp(20px, 5vw, 72px);
   --form-w: min(680px, calc(100vw - 32px));
 

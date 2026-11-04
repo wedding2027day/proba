@@ -73,7 +73,9 @@ export function buildLocation(tl: gsap.core.Timeline, at: number, env: Env, thre
   // Нить — рамка кадра, затем короткая мерная линия у адреса, снова рамка.
   // Линия стоит точно над блоком адреса, при любой высоте экрана.
   const ruleY = (q('.loc__info')[0] as HTMLElement).offsetTop - 10;
-  thread.key(at - 0.05, line(0, h * (mobile ? 0.5 : 0.62), w, h * (mobile ? 0.5 : 0.62)));
+  thread.key(at - 0.05, line(0, h * (mobile ? 0.5 : 0.62), w, h * (mobile ? 0.5 : 0.62)), mobile ? 0 : 1);
+  // На телефоне нить ждёт, пока погаснут строки «Вечеринка», и проявляется уже аркой.
+  if (mobile) thread.key(at + 0.25, arch(sx, sy, sw, sh, R), 0);
   // Линия расписания складывается в рамку-арку и растёт вместе с окном.
   thread.key(at + appear * 0.6, arch(sx, sy, sw, sh, R));
   thread.hold(at + appear + 0.4);
@@ -81,6 +83,9 @@ export function buildLocation(tl: gsap.core.Timeline, at: number, env: Env, thre
   thread.key(infoAt - 0.1, line(w * 0.06, ruleY, w * 0.06, ruleY), 0);
   thread.key(infoAt + 0.5, line(mobile ? w * 0.06 : w * 0.06, ruleY, mobile ? w * 0.94 : w * 0.5, ruleY));
   thread.hold(leave);
+  // Линия гаснет над адресом и проявляется уже рамкой карточки: через текст она не идёт.
+  thread.key(leave + 0.15, line(w * 0.06, ruleY, mobile ? w * 0.94 : w * 0.5, ruleY), 0);
+  thread.key(leave + 0.2 + shrink - 0.3, rect(card.x, card.y, card.w, card.h), 0);
   thread.key(leave + 0.2 + shrink, rect(card.x, card.y, card.w, card.h));
 
   return { dressAt, card };

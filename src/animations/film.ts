@@ -46,11 +46,21 @@ class Film {
   private lastW = 0;
   private lastH = 0;
   private onResize = () => this.scheduleRebuild();
+  private fontsPending = false;
   private rebuildTimer = 0;
 
   mount(root: HTMLElement) {
     this.root = root;
+    this.fontsPending = document.fonts?.status !== 'loaded';
     this.build();
+    // Если предзагрузка вышла по таймауту, шрифт догрузится позже: все замеры текста надо повторить.
+    if (this.fontsPending) {
+      void document.fonts.ready.then(() => {
+        if (this.root !== root) return;
+        this.fontsPending = false;
+        this.scheduleRebuild(true);
+      });
+    }
     window.addEventListener('resize', this.onResize);
     window.addEventListener('orientationchange', this.onResize);
   }
@@ -73,14 +83,14 @@ class Film {
     return { w, h, H, mobile: w < 820 || w / h < 0.8 };
   }
 
-  private scheduleRebuild() {
+  private scheduleRebuild(force = false) {
     window.clearTimeout(this.rebuildTimer);
     this.rebuildTimer = window.setTimeout(() => {
       const w = window.innerWidth;
       const h = window.innerHeight;
       const touch = window.matchMedia('(pointer: coarse)').matches;
       // На телефоне высота меняется от адресной строки — это не повод перестраивать сцену.
-      if (w === this.lastW && (touch ? Math.abs(h - this.lastH) < 160 : h === this.lastH)) return;
+      if (!force && w === this.lastW && (touch ? Math.abs(h - this.lastH) < 160 : h === this.lastH)) return;
       const progress = this.st?.progress ?? 0;
       const y = window.scrollY;
       const inFilm = this.st ? y <= this.st.end : true;

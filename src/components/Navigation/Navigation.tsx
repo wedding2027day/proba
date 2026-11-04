@@ -51,6 +51,7 @@ export function Navigation({ onReplay, reduced }: { onReplay: () => void; reduce
   const idx = Math.max(0, CHAPTERS.findIndex((c) => c.id === chapter));
   return (
     <>
+      <div className={`nav-scrim ${chapter === 'rsvp' ? 'is-on' : ''}`} aria-hidden="true" />
       <nav className="nav" aria-label="Навигация">
         <button type="button" className="nav__mono" onClick={() => go('story')} aria-label="К началу истории">
           {a}<i>&</i>{b}

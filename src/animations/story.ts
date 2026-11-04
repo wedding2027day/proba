@@ -4,7 +4,7 @@ import type { Env } from './film';
 
 /** Сцена 02, главный момент: две карточки на краях сходятся в один кадр, огромные имена уходят за людей. */
 export function buildStory(tl: gsap.core.Timeline, at: number, env: Env, thread: Thread, root: HTMLElement) {
-  const { w, h, mobile } = env;
+  const { w, h, H, mobile } = env;
   const scene = root.querySelector<HTMLElement>('.story')!;
   const q = gsap.utils.selector(scene);
   const [nameA] = q('.story__name--a') as HTMLElement[];
@@ -22,6 +22,8 @@ export function buildStory(tl: gsap.core.Timeline, at: number, env: Env, thread:
   const gap = namesBase * 1.2;
 
   gsap.set(scene, { autoAlpha: 1 });
+  // Имена отсчитываются от центра видимой области, а не от центра сцены высотой 100lvh.
+  gsap.set(q('.story__names'), { y: (h - H) / 2 });
 
   const frames = {
     l: q('.story__frame--l'),
@@ -35,10 +37,21 @@ export function buildStory(tl: gsap.core.Timeline, at: number, env: Env, thread:
 
   // Начальные окна-карточки. Компьютер: на краях экрана с лёгким наклоном.
   // Телефон: движение по вертикали, сверху невеста, снизу жених, имена между ними.
+  // Окна на телефоне считаем от видимой области: сверху шапка, в центре имена, снизу панель Safari.
+  const namesBand = gap + namesBase * 0.9 + 10;
+  const windowAt = (top: number, bottom: number, centerPct: number, side: [number, number]) => {
+    const size = Math.max(0, bottom - top);
+    const inTop = (centerPct / 100) * H - size / 2;
+    return {
+      inset: [(inTop / H) * 100, side[0], 100 - ((inTop + size) / H) * 100, side[1]],
+      x: 0,
+      y: top - inTop,
+    };
+  };
   const start = mobile
     ? {
-        l: { inset: [13, 0, 57, 10], x: 0, y: -0.06 * h, r: -1.6 },
-        r: { inset: [17, 10, 53, 0], x: 0, y: 0.42 * h, r: 1.6 },
+        l: { ...windowAt(58, h / 2 - namesBand, 28, [0, 10]), r: -1.6 },
+        r: { ...windowAt(h / 2 + namesBand, h - 16, 32, [10, 0]), r: 1.6 },
       }
     : {
         l: { inset: [6, 0, 28, 46], x: -0.205 * w, y: 0, r: -2.6 },
@@ -106,8 +119,12 @@ export function buildStory(tl: gsap.core.Timeline, at: number, env: Env, thread:
     }, at + 0.35 + (i % 9) * 0.045);
   });
   // Имена расходятся: верхнее уходит над головами, нижнее остаётся за фигурами.
-  tl.to(nameA, { x: 0.035 * w, y: (mobile ? -0.405 : -0.355) * h, duration: 1.35, ease: 'power2.inOut' }, at + 1.75);
-  tl.to(nameB, { x: -0.035 * w, y: (mobile ? 0.235 : 0.27) * h, duration: 1.35, ease: 'power2.inOut' }, at + 1.8);
+  // На телефоне верхнее имя не заходит под шапку, а нижнее останавливается выше подписи при любой высоте экрана.
+  const signTop = (q('.story__sign')[0] as HTMLElement).offsetTop;
+  const finalA = mobile ? Math.max(-0.405 * h, 60 + F * 0.45 - h / 2) : -0.355 * h;
+  const finalB = mobile ? Math.min(0.235 * h, signTop - 10 - F * 0.45 - h / 2) : 0.27 * h;
+  tl.to(nameA, { x: 0.035 * w, y: finalA, duration: 1.35, ease: 'power2.inOut' }, at + 1.75);
+  tl.to(nameB, { x: -0.035 * w, y: finalB, duration: 1.35, ease: 'power2.inOut' }, at + 1.8);
 
   // 3. Единый кадр: подпись с обоими именами, потому что огромные теперь заслонены людьми.
   tl.fromTo(q('.story__sign'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, at + 2.55);
@@ -126,10 +143,24 @@ export function buildStory(tl: gsap.core.Timeline, at: number, env: Env, thread:
 
   // Нить: свисает к именам → связывает левую и правую части → останавливается над лицами → уходит вниз.
   const c = w / 2;
-  thread.key(at, line(c, 0, c, h / 2 - gap - namesBase * 0.8));
-  thread.key(at + 1.2, wave(0, w, h * 0.5, h * (mobile ? 0.1 : 0.18)));
-  thread.key(at + 2.5, line(c, 0, c, h * (mobile ? 0.13 : 0.09)));
-  thread.hold(leave);
+  const drop = line(c, 0, c, h / 2 - gap - namesBase * 0.8);
+  if (mobile) {
+    // На телефоне имена занимают почти всю ширину: нить гаснет, появляется между ними и не идёт через буквы.
+    const between = wave(0, w, h * 0.5, Math.max(8, Math.min(h * 0.05, midB * h - F * 0.5)));
+    thread.key(at, drop);
+    thread.key(at + 0.2, drop, 0);
+    // Появляется только после того, как «и» между именами растаяло.
+    thread.key(at + 0.72, between, 0);
+    thread.key(at + 1.1, between);
+    thread.hold(at + 1.65);
+    thread.key(at + 1.85, between, 0);
+    thread.hold(leave);
+  } else {
+    thread.key(at, drop);
+    thread.key(at + 1.2, wave(0, w, h * 0.5, h * 0.18));
+    thread.key(at + 2.5, line(c, 0, c, h * 0.09));
+    thread.hold(leave);
+  }
 
   return { end, namesBase };
 }

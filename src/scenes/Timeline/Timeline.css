@@ -82,6 +82,8 @@
 .tl-row--gold { color: transparent; -webkit-text-stroke: 1px var(--gold); font-style: normal; text-transform: uppercase; }
 
 @media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  /* Плотная часть градиента закрывает всю строку заголовка: этапы уходят под неё, не наезжая на текст */
+  .tl::before { height: calc(var(--safe-t) + 158px); background: linear-gradient(var(--ink) 74%, transparent); }
   .tl__heading { left: 44px; top: calc(var(--safe-t) + 72px); }
   .tl__track { flex-direction: column; left: 0; right: 0; height: auto; width: 100%; }
   .tl-event, .tl-event--party { width: 100%; height: auto; min-height: 62vh; padding: 0 20px 0 44px; }

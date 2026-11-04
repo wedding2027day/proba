@@ -58,11 +58,19 @@
 
 @media (max-width: 819px), (max-aspect-ratio: 4/5) {
   .dress__sides { display: none; }
-  .fan-stage { padding-top: 16vh; }
-  .fan { --card-w: min(38vw, 22vh); }
+  .fan-stage { padding-top: calc(var(--svh) * 16); }
+  .fan { --card-w: min(38vw, calc(var(--svh) * 22)); }
+  .dress__copy { padding-top: calc(var(--safe-t) + var(--svh) * 11); }
+  .dress__caption { font-size: clamp(13px, calc(var(--svh) * 1.9), 15px); }
+  /* Подпись должна помещаться в открытой полоске карточки, которую не закрывает соседняя */
+  .fan__lift { left: 6px; right: 7px; top: 8px; }
+  .fan__name { font-size: clamp(14px, calc(var(--svh) * 2.2), 18px); }
+  .fan__hex { font-size: 8px; letter-spacing: 0.08em; opacity: 0.8; }
+  .dress__action { padding-bottom: calc(var(--safe-b) + var(--svh) * 3); }
   .dress__head { font-size: clamp(30px, 9.4vw, 60px); }
   .final__title { font-size: clamp(38px, 12vw, 84px); }
-  .final { padding-top: calc(var(--safe-t) + 12vh); }
+  .final { padding-top: calc(var(--safe-t) + var(--svh) * 12); }
+}
 
 /* Невысокий телефон: веер ниже и компактнее, подпись не заходит на карточки */
 @media (max-height: 620px) and (max-aspect-ratio: 4/5) {

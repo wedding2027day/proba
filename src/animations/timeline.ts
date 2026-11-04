@@ -152,10 +152,16 @@ export function buildTimeline(
   if (mobile) {
     const x = 20;
     thread.key(at, line(0, tlY, w, tlY));
-    thread.hold(at + openDur - 0.25);
+    thread.hold(at + openDur - 0.3);
+    // Разрез гаснет на месте, вертикальная линия появляется слева: нить не проходит через время и название этапа.
+    thread.key(at + openDur - 0.08, line(0, tlY, w, tlY), 0);
+    thread.key(at + openDur, line(x, 0, x, head), 0);
     thread.key(start + 0.15, line(x, 0, x, head));
-    thread.hold(end - 0.3);
-    thread.key(end, line(x, 0, x, H));
+    // Строки «Вечеринка» идут на всю ширину экрана: к ним нить гаснет, чтобы не резать текст.
+    const party = Math.max(start + 0.3, when(events[events.length - 1]) - 0.3);
+    thread.hold(party - 0.2);
+    thread.key(party, line(x, 0, x, head), 0);
+    thread.hold(end);
   } else {
     thread.key(at, line(0, tlY, w, tlY));
     thread.key(start + 0.1, line(0, tlY, head, tlY));

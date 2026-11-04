@@ -1,5 +1,5 @@
 import { gsap } from './setup';
-import { arc, line, type Thread } from './thread';
+import { arc, line, rect, type Thread } from './thread';
 import type { Env } from './film';
 import type { CardRect } from './location';
 
@@ -31,8 +31,8 @@ export function buildDress(
   tl.fromTo(q('.dress__caption'), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, head + 0.35);
 
   // Веер. У каждой карточки своя траектория: подъём по дуге, отставание и лёгкий поворот в глубине.
-  const spread = (mobile ? 25 : 34) * (Math.PI / 180);
-  const spreadDeg = mobile ? 25 : 34;
+  const spreadDeg = mobile ? 27 : 34;
+  const spread = spreadDeg * (Math.PI / 180);
   const fanAt = at + 0.8;
   cards.forEach((c, i) => {
     const u = n > 1 ? i / (n - 1) : 0.5;
@@ -94,11 +94,16 @@ export function buildDress(
   const pivotX = card.x + card.w / 2;
   const pivotY = card.y + card.h * 1.35;
   const r = card.h * 0.85 + card.h * 0.5 + 22;
-  thread.key(at + 0.65, arc(pivotX, pivotY, r, -0.01, 0.01));
-  thread.hold(fanAt + 0.2);
-  thread.key(fanned - 0.2, arc(pivotX, pivotY, r, -spread - 0.1, spread + 0.1));
+  // Рамка гаснет на месте, дуга появляется уже над веером: нить не идёт через подписи на карточках.
+  thread.key(at + 0.3, rect(card.x, card.y, card.w, card.h), 0);
+  // Пока карточки подняты, их подписи заходят выше дуги: она проявляется, когда веер почти лёг на место.
+  thread.key(at + 0.65, arc(pivotX, pivotY, r, -spread - 0.1, spread + 0.1), 0);
+  thread.key(fanAt + 1.0, arc(pivotX, pivotY, r, -spread - 0.1, spread + 0.1), 0);
+  thread.key(fanned, arc(pivotX, pivotY, r, -spread - 0.1, spread + 0.1));
   thread.hold(close);
-  thread.key(close + 0.7, arc(pivotX, pivotY, r, -0.01, 0.01));
+  // Дуга гаснет вместе с веером и появляется уже кромкой листа, не пересекая подписи на карточках.
+  thread.key(close + 0.4, arc(pivotX, pivotY, r, -spread * 0.6, spread * 0.6), 0);
+  thread.key(toBridge + 1.2, line((w - bw) / 2, H - bh, (w + bw) / 2, H - bh), 0);
   thread.key(toBridge + 1.55, line((w - bw) / 2, H - bh, (w + bw) / 2, H - bh));
   thread.hold(end);
 

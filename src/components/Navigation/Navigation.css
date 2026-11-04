@@ -18,6 +18,17 @@
 .nav__burger.is-open span { transform: rotate(45deg); }
 .nav__burger.is-open span + span { transform: rotate(-45deg); }
 @media (max-width: 560px) { .nav__index { display: none; } }
+/* После фильма страница прокручивается обычным потоком: на телефоне текст уходит под плотную полосу, а не под монограмму */
+.nav-scrim { display: none; }
+@media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  .nav-scrim {
+    display: block; position: fixed; left: 0; right: 0; top: 0; z-index: 59;
+    height: calc(var(--safe-t) + 72px);
+    background: linear-gradient(var(--ink) 78%, transparent);
+    opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  }
+  .nav-scrim.is-on { opacity: 1; }
+}
 
 .menu {
   position: fixed; inset: 0; z-index: 55;

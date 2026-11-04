@@ -32,7 +32,8 @@
 .date__caption-text { font-family: var(--font-display); font-style: italic; font-size: clamp(17px, 2vw, 25px); line-height: 1.2; }
 .date__count { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--mute); font-weight: 400; }
 @media (max-aspect-ratio: 4/5) {
-  .date__caption { flex-direction: column; gap: 6px; align-items: center; text-align: center; bottom: calc(var(--safe-b) + 3vh); }
+  /* Своя зона под датой. Её реальную высоту замеряет date.ts и по ней рассчитывает размер цифр */
+  .date__caption { flex-direction: column; gap: 6px; align-items: center; text-align: center; bottom: calc(var(--safe-b) + max(14px, calc(var(--svh) * 2.6))); }
 }
 
 .is-static .date { padding: 12vh var(--pad); text-align: center; background: var(--ink); }

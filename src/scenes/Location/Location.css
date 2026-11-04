@@ -33,7 +33,7 @@
 }
 .loc__cross svg { width: 54px; height: 54px; }
 @media (max-width: 819px), (max-aspect-ratio: 4/5) {
-  .loc__name { top: calc(var(--safe-t) + 13vh); font-size: clamp(48px, 15.5vw, 110px); }
+  .loc__name { top: calc(var(--safe-t) + var(--svh) * 13); font-size: clamp(48px, 15.5vw, 110px); }
   .loc__info { width: auto; right: var(--pad); top: calc(56% + 14px); }
   .loc__cross { right: auto; left: var(--pad); bottom: calc(var(--safe-b) + 18px); }
   .loc__cross svg { width: 36px; height: 36px; }
