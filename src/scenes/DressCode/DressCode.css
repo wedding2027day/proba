@@ -53,6 +53,8 @@
   opacity: 0;
   z-index: 3;
   will-change: transform;
+  /* Декоративный лист: пока он невидим, он не должен перехватывать нажатия на кнопку образов */
+  pointer-events: none;
 }
 .dress__bridge.is-fading { clip-path: inset(100% 0 0 0); transition: clip-path 0.8s cubic-bezier(0.6, 0, 0.3, 1); }
 
