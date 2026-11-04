@@ -1,0 +1,165 @@
+/* Дизайн-система EDITORIAL BLACK */
+:root {
+  --ink: #0b0b0b;
+  --ivory: #f4f0e9;
+  --gold: #c6a77b;
+  --graphite: #242424;
+  --mute: #a9a5a0;
+
+  --font-display: 'Cormorant', 'Times New Roman', serif;
+  --font-digits: 'Oranienbaum', 'Cormorant', 'Times New Roman', serif;
+  --font-ui: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+
+  --vh-small: 100vh;
+  --vh-large: 100vh;
+  --pad: clamp(20px, 5vw, 72px);
+  --form-w: min(680px, calc(100vw - 32px));
+
+  --paper-ivory: url('/assets/textures/paper-ivory.webp');
+  --paper-graphite: url('/assets/textures/paper-graphite.webp');
+}
+@supports (height: 100svh) {
+  :root { --vh-small: 100svh; --vh-large: 100lvh; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--ink);
+  color: var(--ivory);
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;
+}
+html.is-locked, html.is-locked body { overflow: hidden; }
+html.is-locked body { touch-action: none; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  margin: 0;
+  min-height: var(--vh-small);
+  font-family: var(--font-ui);
+  font-weight: 300;
+  line-height: 1.5;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3, p, figure, ol, ul { margin: 0; padding: 0; }
+ol, ul { list-style: none; }
+img, svg { display: block; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+
+:focus-visible { outline: 1px solid var(--gold); outline-offset: 3px; }
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+/* Кнопка: контур-волосок с заполнением снизу */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 34px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--btn-fg, var(--ivory));
+  border: 1px solid var(--btn-line, rgb(198 167 123 / 0.65));
+  transition: color 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.45s;
+  isolation: isolate;
+}
+.btn::before {
+  content: '';
+  position: absolute; inset: 0; z-index: -1;
+  background: var(--btn-fill, var(--gold));
+  transform: translateY(101%);
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@media (hover: hover) {
+  .btn:hover { color: var(--btn-fg-hover, var(--ink)); }
+  .btn:hover::before { transform: none; }
+}
+.btn:active { color: var(--btn-fg-hover, var(--ink)); }
+.btn:active::before { transform: none; }
+.btn[disabled] { cursor: default; }
+
+/* Зерно плёнки: двигаем шагами, только transform */
+.grain {
+  position: fixed; inset: -60px; z-index: 70;
+  pointer-events: none;
+  background: url('/assets/textures/grain.png') repeat;
+  opacity: 0.055;
+  animation: grain-shift 0.9s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  17% { transform: translate(-22px, 14px); }
+  33% { transform: translate(18px, -26px); }
+  50% { transform: translate(-30px, -12px); }
+  67% { transform: translate(26px, 24px); }
+  83% { transform: translate(-12px, 30px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Заглушка фото: композиция сохраняется, если файла нет */
+.photo { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--graphite) var(--paper-graphite); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.photo__colour { position: absolute; inset: 0; opacity: 0; }
+.is-static .photo__colour { opacity: 1; }
+
+/* Сама сцена фильма */
+.film { position: relative; }
+.film__stage {
+  position: sticky; top: 0; z-index: 20;
+  height: var(--vh-large);
+  overflow: hidden;
+  overflow: clip;
+  background: var(--ink);
+  isolation: isolate;
+}
+.scene { position: absolute; inset: 0; overflow: hidden; visibility: hidden; }
+.scene__safe { position: absolute; left: 0; right: 0; top: 0; height: var(--vh-small); }
+.probe { position: fixed; left: -9px; top: 0; width: 1px; pointer-events: none; visibility: hidden; }
+.probe--s { height: var(--vh-small); }
+.probe--l { height: var(--vh-large); }
+
+.thread { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; overflow: visible; }
+.thread polyline { fill: none; stroke: var(--gold); stroke-width: 1.1; stroke-linejoin: round; stroke-linecap: round; }
+
+/* Режим reduced motion: сцены идут обычным потоком, без закрепления */
+.is-static .film__stage { position: relative; height: auto; overflow: visible; clip-path: none !important; }
+.is-static .scene { position: relative; inset: auto; visibility: visible; overflow: hidden; }
+.is-static .scene__safe { position: relative; height: auto; }
+.is-static .thread, .is-static .grain { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .grain { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
+
+/* Пока конверт закрыт, сцена полностью скрыта и не занимает экран */
+.film__stage--closed { clip-path: inset(50%); }

@@ -1,0 +1,7 @@
+# Функции сами проверяют доступ (форм-токен и токен организатора),
+# поэтому в браузер не нужно отдавать никаких ключей Supabase.
+[functions.submit-rsvp]
+verify_jwt = false
+
+[functions.rsvp-admin]
+verify_jwt = false

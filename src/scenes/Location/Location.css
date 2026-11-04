@@ -1,0 +1,53 @@
+.loc { background: var(--ink); }
+.loc__media { position: absolute; inset: 0; will-change: clip-path; }
+.loc__shade { position: absolute; inset: 0; opacity: 0; background: linear-gradient(180deg, rgb(11 11 11 / 0.72), rgb(11 11 11 / 0.3) 40%, rgb(11 11 11 / 0.88) 78%); }
+.loc__copy { pointer-events: none; }
+.loc__copy a { pointer-events: auto; }
+.loc__name {
+  position: absolute; left: var(--pad); right: var(--pad); top: calc(var(--safe-t) + 14vh);
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(50px, min(11.5vw, 22vh), 210px);
+  line-height: 0.96;
+  letter-spacing: -0.01em;
+  color: var(--ivory);
+}
+.loc__name-line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.loc__name-line span { display: block; }
+.loc__info {
+  position: absolute; left: var(--pad); width: min(46vw, 560px);
+  top: calc(66% + 16px);
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-start;
+  color: var(--ivory);
+}
+.loc__meta { color: var(--gold); }
+.loc__address { font-family: var(--font-display); font-size: clamp(22px, 2.3vw, 32px); line-height: 1.15; }
+.loc__details { font-size: 14px; color: rgb(244 240 233 / 0.75); }
+.loc__route { margin-top: 8px; backdrop-filter: none; }
+.loc__cross {
+  position: absolute; right: var(--pad); bottom: calc(var(--safe-b) + 7vh);
+  display: flex; align-items: center; gap: 14px;
+  color: var(--ivory);
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+}
+.loc__cross svg { width: 54px; height: 54px; }
+@media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  .loc__name { top: calc(var(--safe-t) + 13vh); font-size: clamp(48px, 15.5vw, 110px); }
+  .loc__info { width: auto; right: var(--pad); top: calc(56% + 14px); }
+  .loc__cross { right: auto; left: var(--pad); bottom: calc(var(--safe-b) + 18px); }
+  .loc__cross svg { width: 36px; height: 36px; }
+  .loc__coords { font-size: 10px; letter-spacing: 0.16em; }
+}
+@media (max-height: 500px) {
+  .loc__name { top: 58px; font-size: 13vh; }
+  .loc__info { top: 56%; gap: 2px; }
+  .loc__details { display: none; }
+  .loc__cross { bottom: 12px; }
+}
+
+.is-static .loc { padding: 8vh 0; }
+.is-static .loc__media { position: relative; inset: auto; aspect-ratio: 3 / 2; }
+.is-static .loc__copy { padding: 24px var(--pad); pointer-events: auto; }
+.is-static .loc__name, .is-static .loc__info, .is-static .loc__cross { position: static; width: auto; }
+.is-static .loc__info, .is-static .loc__cross { margin-top: 18px; }

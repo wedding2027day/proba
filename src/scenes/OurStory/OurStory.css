@@ -1,0 +1,70 @@
+.story { background: var(--ink); isolation: isolate; }
+.story__paper { position: absolute; inset: 0; background: var(--ivory) var(--paper-ivory); background-size: 512px; }
+.story__night { position: absolute; inset: 0; background: var(--ink); }
+.story__depth { position: absolute; inset: 0; transform-origin: 50% 26%; will-change: transform; }
+.story__people { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.story__frame--shadow { will-change: transform; }
+.story__shadow { position: absolute; box-shadow: 0 30px 70px rgb(11 11 11 / 0.32), 0 6px 18px rgb(11 11 11 / 0.18); }
+.story__frame { position: absolute; top: 0; bottom: 0; width: 50%; will-change: transform, clip-path; }
+.story__frame--l { left: 0; }
+.story__frame--r { right: 0; }
+.story__frame .photo { height: 100%; background: var(--graphite); }
+/* Половины одного кадра: прижаты к шву и масштабируются от точки у лиц, поэтому стык не расходится */
+.story__frame img { width: 100%; height: 100%; object-fit: cover; will-change: transform; }
+.story__frame--l img { object-position: 100% 12%; transform-origin: 100% 30%; }
+.story__frame--r img { object-position: 0% 12%; transform-origin: 0% 30%; }
+.story__frame--cut { pointer-events: none; }
+.story__dim {
+  position: absolute; inset: 0; opacity: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgb(11 11 11 / 0.62), rgb(11 11 11 / 0.42) 45%, rgb(11 11 11 / 0.7));
+}
+.story__floor {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 42%; z-index: 4; opacity: 0; pointer-events: none;
+  background: linear-gradient(180deg, transparent, rgb(11 11 11 / 0.9));
+}
+
+.story__names { margin: 0; font-weight: 400; position: absolute; inset: 0; pointer-events: none; }
+/* Имена лежат между подложкой и людьми */
+.story__name, .story__joiner { z-index: 2; }
+.story__char { display: inline-block; font-style: normal; }
+.story__name, .story__joiner {
+  position: absolute; left: 50%; top: 50%;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+.story__name { color: var(--ink); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 400; }
+.story__joiner { color: var(--ink); font-style: italic; font-weight: 400; }
+
+.story__safe {
+  pointer-events: none; z-index: 6;
+  display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: clamp(6px, 1.2vh, 12px);
+  padding: 0 var(--pad) calc(var(--safe-b) + clamp(18px, 5.5vh, 60px));
+}
+.story__sign {
+  text-align: center; color: var(--ivory); opacity: 0;
+  font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.22em;
+  font-size: clamp(12px, 1.5vw, 19px);
+}
+.story__sign i { text-transform: none; letter-spacing: 0; font-size: 1.2em; margin: 0 0.3em; }
+.story__subtitle {
+  overflow: hidden;
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(18px, 2.4vw, 32px);
+  line-height: 1.25;
+  color: var(--ivory);
+}
+.story__subtitle span { display: block; }
+
+/* Статичный режим */
+.is-static .story { min-height: var(--vh-small); color: var(--ivory); padding: 16vh var(--pad) 8vh; display: flex; flex-direction: column; justify-content: flex-end; }
+.is-static .story__paper, .is-static .story__night, .is-static .story__floor, .is-static .story__sign, .is-static .story__frame--shadow { display: none; }
+.is-static .story__depth { position: relative; inset: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.is-static .story__frame { position: relative; width: 100%; aspect-ratio: 2 / 3; }
+.is-static .story__names { position: relative; inset: auto; grid-column: 1 / -1; order: -1; text-align: center; margin-bottom: 32px; pointer-events: auto; }
+.is-static .story__name, .is-static .story__joiner { position: static; display: block; font-size: clamp(38px, 10vw, 120px); color: var(--ivory); }
+.is-static .story__joiner { font-size: 28px; }
+.is-static .story__safe { margin-top: 24px; padding: 0; }
+.is-static .story__subtitle { position: static; }

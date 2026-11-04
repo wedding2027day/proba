@@ -1,0 +1,16 @@
+body { margin: 0; background: #0b0b0b; color: #f4f0e9; font-family: Jost, Arial, sans-serif; font-weight: 400; }
+.org { padding: 24px clamp(16px, 4vw, 48px); }
+.org--login { max-width: 360px; margin: 16vh auto 0; display: flex; flex-direction: column; gap: 12px; }
+h1 { margin: 0 0 12px; font-family: Cormorant, serif; font-weight: 400; font-size: 42px; }
+label { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #a9a5a0; }
+input { min-height: 48px; padding: 0 12px; background: #242424; border: 1px solid #3a3a3a; color: inherit; font: inherit; }
+button { min-height: 44px; padding: 0 18px; background: none; border: 1px solid #c6a77b; color: inherit; font: inherit; cursor: pointer; }
+button:disabled { opacity: 0.5; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; }
+.org__actions { display: flex; gap: 8px; }
+.org__stats { color: #c6a77b; }
+.org__error { color: #e08a7d; }
+.org__table { overflow-x: auto; margin-top: 16px; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 12px; border-bottom: 1px solid #242424; text-align: left; vertical-align: top; }
+th { color: #a9a5a0; font-weight: 400; white-space: nowrap; }

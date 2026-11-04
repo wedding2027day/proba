@@ -1,0 +1,116 @@
+.rc {
+  width: var(--form-w); margin: 0 auto;
+  background: var(--ivory) var(--paper-ivory); background-size: 512px;
+  color: var(--ink);
+  box-shadow: 0 40px 90px rgb(0 0 0 / 0.6);
+}
+.rc__inner { padding: clamp(10px, 2vh, 22px) clamp(22px, 6vw, 64px) clamp(32px, 6vw, 58px); display: flex; flex-direction: column; gap: 24px; }
+
+.rf { position: relative; display: flex; flex-direction: column; border: 0; padding: 0; margin: 0; min-width: 0; }
+.rf label, .rf legend, .rf__label { font-size: 11px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: #5c5853; padding: 0; }
+.rf small { font-size: 10px; letter-spacing: 0.06em; text-transform: none; color: #8b8680; margin-left: 4px; }
+.rf input, .rf textarea {
+  width: 100%; min-height: 46px; padding: 8px 0;
+  background: none; border: 0; border-bottom: 1px solid rgb(11 11 11 / 0.26); border-radius: 0;
+  outline: none;
+  font-family: var(--font-display); font-size: 23px; line-height: 1.2; color: var(--ink);
+  resize: vertical;
+  -webkit-appearance: none; appearance: none;
+}
+.rf__line {
+  position: absolute; left: 0; right: 0; height: 1px; background: var(--gold);
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+  top: var(--line-top, auto);
+}
+.rf input + .rf__line, .rf textarea + .rf__line { margin-top: -1px; position: relative; }
+.rf input:focus + .rf__line, .rf textarea:focus + .rf__line { transform: scaleX(1); }
+.rf label { transition: color 0.35s; }
+.rf:focus-within label { color: #8a6e4a; }
+.rf.has-error input { border-bottom-color: #8a2f25; }
+.rf__error { margin-top: 6px; font-size: 13px; color: #8a2f25; }
+
+.choice { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.choice button {
+  min-height: 56px; padding: 8px 10px;
+  border: 1px solid rgb(11 11 11 / 0.26);
+  font-family: var(--font-display); font-size: 19px; line-height: 1.12;
+  transition: background 0.4s, color 0.4s, border-color 0.4s;
+}
+.choice button.is-on { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
+@media (max-width: 400px) { .choice { grid-template-columns: 1fr; } }
+
+/* Плавное раскрытие без измерения высоты */
+.rc__more { display: grid; grid-template-rows: 0fr; margin-top: -24px; transition: grid-template-rows 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), margin-top 0.6s; }
+.rc__more.is-open { grid-template-rows: 1fr; margin-top: 0; }
+.rc__more-inner { min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 24px; }
+
+.stepper { display: flex; align-items: center; gap: 4px; margin-top: 6px; }
+.stepper button { width: 48px; height: 48px; font-size: 22px; font-weight: 300; border: 1px solid rgb(11 11 11 / 0.26); transition: opacity 0.3s; }
+.stepper button:disabled { opacity: 0.3; cursor: default; }
+.stepper output { min-width: 56px; text-align: center; font-family: var(--font-digits); font-size: 28px; font-variant-numeric: lining-nums; }
+
+.rf__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.rc__error { padding: 10px 14px; border-left: 1px solid #8a2f25; font-size: 14px; color: #8a2f25; }
+
+.rc__submit { --btn-fg: var(--ivory); --btn-line: var(--ink); --btn-fill: var(--gold); --btn-fg-hover: var(--ink); background: var(--ink); min-height: 58px; gap: 12px; }
+.rc__submit.is-loading { opacity: 0.85; }
+.rc__spinner { width: 15px; height: 15px; border: 1px solid rgb(244 240 233 / 0.3); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.rsvp__finale { position: relative; }
+.thanks {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: clamp(18px, 3.4vh, 30px);
+  min-height: var(--vh-small);
+  justify-content: center;
+  padding: 8vh var(--pad);
+  text-align: center;
+  --tw: min(74vw, 42vh, 420px);
+}
+.thanks__text { font-family: var(--font-display); font-size: clamp(25px, 4.6vw, 42px); line-height: 1.14; color: var(--ivory); max-width: 22ch; }
+.thanks__rule { display: block; width: min(52vw, 240px); height: 1px; background: var(--gold); }
+.thanks__more { min-height: 44px; font-size: 12px; letter-spacing: 0.08em; color: var(--mute); text-decoration: underline; text-underline-offset: 4px; }
+
+/* Конверт финала. Порядок слоёв задан явно: как и у первого конверта, он не зависит от движка */
+.tenv { position: relative; flex: none; width: var(--tw); height: calc(var(--tw) * 0.66); }
+.tenv__back, .tenv__pocket i, .tenv__flap-out, .tenv__flap-in {
+  background-color: #1e1d1b; background-image: var(--paper-graphite); background-size: 512px;
+}
+.tenv__back { box-shadow: 0 24px 48px rgb(0 0 0 / 0.8), 0 2px 4px rgb(0 0 0 / 0.7); position: absolute; inset: 0; z-index: 0; background-image: linear-gradient(rgb(0 0 0 / 0.65), rgb(0 0 0 / 0.4)), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__flap { position: absolute; left: 0; right: 0; top: 0; height: 56%; z-index: 5; }
+.tenv__flap-out, .tenv__flap-in { position: absolute; inset: 0; clip-path: polygon(0 0, 100% 0, 52.5% 96.5%, 51% 99%, 50% 100%, 49% 99%, 47.5% 96.5%); }
+.tenv__flap-out { background-image: linear-gradient(180deg, rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.02) 70%), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__flap-in { visibility: hidden; background-image: linear-gradient(0deg, rgb(198 167 123 / 0.3), rgb(198 167 123 / 0.08) 80%), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__pocket { position: absolute; inset: 0; z-index: 4; }
+.tenv__pocket i { position: absolute; inset: 0; }
+.tenv__pocket i:nth-child(1) { clip-path: polygon(0 0, 52% 52%, 0 100%); background-image: linear-gradient(95deg, rgb(255 255 255 / 0.035), rgb(0 0 0 / 0.14) 70%), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__pocket i:nth-child(2) { clip-path: polygon(100% 0, 48% 52%, 100% 100%); background-image: linear-gradient(265deg, rgb(255 255 255 / 0.015), rgb(0 0 0 / 0.2) 70%), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__pocket i:nth-child(3) { clip-path: polygon(0 100%, 47% 48%, 50% 46.5%, 53% 48%, 100% 100%); background-image: linear-gradient(0deg, rgb(255 255 255 / 0.06), rgb(255 255 255 / 0.015) 75%), var(--paper-graphite); background-size: 100% 100%, 512px; }
+.tenv__seal { position: absolute; left: 50%; top: 56%; width: 20%; aspect-ratio: 1; margin: -10% 0 0 -10%; z-index: 6; filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.6)); }
+
+/* Письмо: три панели, верхняя и нижняя складываются на среднюю */
+.tl-letter { position: absolute; z-index: 3; display: flex; flex-direction: column; }
+.tl-panel { position: relative; flex: 1 1 33.34%; min-height: 0; }
+.tl-panel--m { z-index: 1; }
+.tl-panel--b { z-index: 2; }
+.tl-panel--t { z-index: 3; }
+.tl-panel__face, .tl-panel__rear {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center; padding: 0 8%;
+  background: var(--ivory) var(--paper-ivory); background-size: 512px;
+  color: var(--ink);
+}
+.tl-panel__rear { visibility: hidden; background-image: linear-gradient(rgb(0 0 0 / 0.05), rgb(0 0 0 / 0)), var(--paper-ivory); background-size: 100% 100%, 512px; }
+.tl-panel__shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+.tl-panel__line { font-family: var(--font-display); font-size: clamp(18px, calc(var(--tw) * 0.062), 28px); line-height: 1.1; }
+.tl-panel__line--name { font-style: italic; font-size: clamp(22px, calc(var(--tw) * 0.08), 34px); }
+.tl-panel__line--small { font-family: var(--font-ui); font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: #6d6a66; }
+.tl-panel__mono {
+  position: absolute; left: 50%; top: 50%; z-index: 4;
+  margin: 0; transform: translate(-50%, -50%);
+  font-family: var(--font-display); font-size: calc(var(--tw) * 0.12); line-height: 1; white-space: nowrap;
+  color: #8a6e4a;
+}
+.tl-panel__mono i { font-size: 0.7em; margin: 0 0.1em; }
+.tl-panel__glow { position: absolute; inset: 0; color: var(--gold); filter: blur(7px); opacity: 0; }

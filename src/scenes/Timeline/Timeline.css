@@ -1,0 +1,114 @@
+.tl { background: var(--ink); --tl-y: 62vh; }
+.tl::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 0; z-index: 2; height: calc(var(--safe-t) + 130px);
+  background: linear-gradient(var(--ink) 62%, transparent); pointer-events: none;
+}
+.tl__heading {
+  position: absolute; z-index: 3;
+  top: calc(var(--safe-t) + 78px); left: var(--pad);
+  color: var(--mute);
+}
+.tl__track { position: absolute; top: 0; left: 0; height: var(--vh-small); display: flex; will-change: transform; }
+.tl-event {
+  position: relative; flex: none; height: 100%;
+  width: 74vw;
+  padding-right: 6vw;
+}
+.tl-event--party { width: 92vw; }
+.tl-event__mark {
+  position: absolute; left: 0; top: var(--tl-y);
+  width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%; background: var(--gold);
+}
+.tl-event__time {
+  position: absolute; left: 0; bottom: calc(100% - var(--tl-y) + 10px);
+  overflow: hidden;
+  font-family: var(--font-digits);
+  font-size: clamp(80px, min(15vw, 30vh), 260px);
+  line-height: 1;
+  color: var(--ivory);
+}
+.tl-event__time span { display: block; }
+.tl-event__art { position: absolute; left: 0; right: 6vw; top: calc(var(--tl-y) + 26px); }
+.tl-event__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(30px, min(4vw, 7vh), 62px);
+  line-height: 1.05;
+  color: var(--ivory);
+}
+
+.tl-compose { display: flex; gap: 0.3em; flex-wrap: wrap; font-style: italic; }
+.tl-word { display: block; overflow: hidden; padding: 0 0.04em 0.12em; }
+.tl-word span { display: block; transform-origin: 0 100%; }
+
+.tl-meet__lines { position: relative; height: 12px; width: min(420px, 90%); margin-bottom: 12px; overflow: hidden; }
+.tl-meet__a, .tl-meet__b { position: absolute; top: 5.5px; height: 1px; width: 50%; background: var(--ivory); }
+.tl-meet__a { left: 0; }
+.tl-meet__b { right: 0; }
+.tl-meet__dot { position: absolute; left: 50%; top: 2px; width: 8px; height: 8px; margin-left: -4px; border: 1px solid var(--gold); border-radius: 50%; background: var(--ink); }
+
+/* Ужин: фото справа от времени, крупнее остального */
+.tl-dinner { display: flex; flex-direction: column; }
+.tl-photo {
+  position: absolute; left: 34vw; bottom: 100%; margin-bottom: 40px;
+  width: 30vw; height: 40vh;
+}
+.tl-photo { will-change: transform; box-shadow: 0 24px 60px rgb(0 0 0 / 0.5); }
+.tl-photo img { will-change: transform; }
+.tl-dance { position: relative; }
+.tl-photo--dance { width: 25vw; height: 56vh; left: 36vw; }
+/* Орбиты кружатся вокруг танцующей пары */
+.tl-orbit { position: absolute; left: calc(36vw + 12.5vw - 25vh); bottom: 34px; width: 50vh; height: 50vh; overflow: visible; pointer-events: none; }
+.tl-orbit ellipse { fill: none; stroke: var(--gold); stroke-width: 0.7; }
+.tl-orbit ellipse:nth-child(3) { stroke: var(--ivory); stroke-opacity: 0.6; }
+
+.tl-party { position: absolute; left: 0; right: -6vw; top: calc(-1 * var(--tl-y) + 16vh - 26px); height: 80vh; overflow: hidden; display: flex; align-items: flex-end; }
+.tl-party__photo { position: absolute; inset: 0; opacity: 0; will-change: transform; }
+.tl-party__photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(11 11 11 / 0.1) 30%, rgb(11 11 11 / 0.82)), linear-gradient(90deg, rgb(11 11 11 / 0.6), transparent 42%); }
+.tl-party__photo img { will-change: transform; }
+.tl-party .tl-rows { position: relative; }
+.tl-event--party .tl-event__time { z-index: 2; }
+.tl-rows { width: 100%; opacity: 0; padding-bottom: 2vh; }
+.tl-row {
+  white-space: nowrap; width: max-content;
+  font-family: var(--font-display);
+  font-size: clamp(38px, 8.6vh, 100px);
+  line-height: 1.04;
+  font-style: italic;
+  color: var(--ivory);
+}
+.tl-row--gold { color: transparent; -webkit-text-stroke: 1px var(--gold); font-style: normal; text-transform: uppercase; }
+
+@media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  .tl__heading { left: 44px; top: calc(var(--safe-t) + 72px); }
+  .tl__track { flex-direction: column; left: 0; right: 0; height: auto; width: 100%; }
+  .tl-event, .tl-event--party { width: 100%; height: auto; min-height: 62vh; padding: 0 20px 0 44px; }
+  .tl-event__mark { left: 20px; top: 38px; }
+  .tl-event__time { position: relative; bottom: auto; font-size: clamp(66px, 23vw, 130px); }
+  .tl-event__art { position: relative; left: 0; right: 0; top: 0; margin-top: 10px; }
+  .tl-event__title { font-size: clamp(30px, 9vw, 48px); }
+  .tl-photo { position: relative; left: 0; bottom: auto; margin: 0 0 14px; width: 100%; height: 30vh; }
+  .tl-photo--dance { width: 100%; height: 38vh; left: 0; }
+  .tl-orbit { position: absolute; left: 50%; top: 0; bottom: auto; margin: 0 0 0 -19vh; width: 38vh; height: 38vh; }
+  .tl-party { position: relative; left: -44px; right: auto; top: 0; width: 100vw; height: 40vh; }
+  .tl-party__photo { inset: 0; }
+  .tl-row { font-size: clamp(40px, 13vw, 76px); }
+}
+
+.is-static .tl { padding: 12vh var(--pad); }
+.is-static .tl::before { display: none; }
+.is-static .tl__heading { position: static; margin-bottom: 32px; }
+.is-static .tl__track { position: static; flex-direction: column; height: auto; gap: 48px; }
+.is-static .tl-event { width: 100%; height: auto; min-height: 0; padding: 0; }
+.is-static .tl-event__time { position: static; font-size: clamp(60px, 12vw, 120px); }
+.is-static .tl-event__mark, .is-static .tl-meet__lines, .is-static .tl-orbit { display: none; }
+.is-static .tl-event__art { position: static; margin-top: 8px; }
+.is-static .tl-photo { position: relative; left: 0; bottom: auto; margin: 0 0 12px; width: min(100%, 520px); height: 300px; }
+.is-static .tl-photo--dance { height: 420px; width: min(100%, 340px); }
+.is-static .tl-party__photo { position: relative; opacity: 1; height: 300px; margin-bottom: 12px; }
+.is-static .tl-party { display: block; }
+.is-static .tl-party { position: static; height: auto; }
+.is-static .tl-party .sr-only { position: static; width: auto; height: auto; clip-path: none; font-family: var(--font-display); font-size: clamp(30px, 6vw, 62px); font-weight: 400; }
+.is-static .tl-rows { display: none; }

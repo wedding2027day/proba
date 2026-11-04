@@ -1,0 +1,96 @@
+/* Сцена прозрачна: под ней докручивается снимок площадки */
+.dress__sides { position: absolute; left: 0; right: 0; top: 0; height: var(--vh-small); }
+.dress__side {
+  position: absolute; top: 44%;
+  width: min(15vw, 25vh); aspect-ratio: 8 / 11;
+  left: 50%; margin-left: calc(min(15vw, 25vh) / -2);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.6);
+  will-change: transform;
+}
+.fan-flip { position: relative; will-change: transform; }
+.fan-stage {
+  position: absolute; left: 0; right: 0; top: 0; height: var(--vh-small);
+  display: flex; align-items: center; justify-content: center;
+  perspective: 1300px;
+  padding-top: 13vh;
+}
+.fan { position: relative; width: var(--card-w); height: var(--card-h); --card-w: min(28vh, 20vw, 260px); --card-h: calc(var(--card-w) * 1.48); }
+.fan__card {
+  position: absolute; inset: 0;
+  background-image: var(--paper-ivory) !important;
+  background-blend-mode: multiply;
+  box-shadow: 0 18px 44px rgb(0 0 0 / 0.55), 0 0 0 0.5px rgb(255 255 255 / 0.06);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.fan__lift { position: absolute; left: 10px; right: 10px; top: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: right; }
+.fan__name { font-family: var(--font-display); font-size: clamp(16px, 2.3vh, 24px); line-height: 1.1; font-style: italic; }
+.fan__hex { font-size: 9px; letter-spacing: 0.18em; opacity: 0.65; }
+
+.dress__copy { pointer-events: none; text-align: center; padding: calc(var(--safe-t) + 11vh) var(--pad) 0; }
+.dress__head { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(30px, min(5.4vw, 7.5vh), 84px); line-height: 1.02; color: var(--ivory); }
+.dress__head-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.dress__head-line span { display: block; }
+.dress__caption { margin: 10px auto 0; max-width: 520px; font-size: clamp(13px, 1.7vh, 16px); color: var(--mute); }
+.dress__action { pointer-events: none; display: flex; align-items: flex-end; justify-content: center; padding-bottom: calc(var(--safe-b) + 3vh); }
+.dress__look { pointer-events: auto; min-height: 48px; padding: 0 22px; background: var(--ink); font-size: 11px; letter-spacing: 0.2em; }
+
+.final { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: calc(var(--safe-t) + 15vh) var(--pad) 0; pointer-events: none; }
+.final__title { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: clamp(38px, min(7.4vw, 12vh), 128px); line-height: 1; color: var(--ivory); }
+.final__line { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.04em; }
+.final__line span { display: block; }
+.final__sub { margin-top: 16px; font-family: var(--font-display); font-style: italic; font-size: clamp(18px, 2.2vw, 26px); color: var(--ivory); opacity: 0; }
+.final__photo { position: absolute; inset: 0; visibility: hidden; }
+.final__photo .photo { background: var(--ink); }
+.final__photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(11 11 11 / 0.72), rgb(11 11 11 / 0.5) 45%, rgb(11 11 11 / 0.92)); }
+.final__photo img { object-position: 63% 20%; will-change: transform; }
+.dress__bridge {
+  position: absolute; left: 50%; bottom: 0;
+  width: var(--form-w); margin-left: calc(var(--form-w) / -2);
+  height: 16vh;
+  background: var(--ivory) var(--paper-ivory);
+  background-size: 512px;
+  opacity: 0;
+  z-index: 3;
+  will-change: transform;
+}
+.dress__bridge.is-fading { clip-path: inset(100% 0 0 0); transition: clip-path 0.8s cubic-bezier(0.6, 0, 0.3, 1); }
+
+@media (max-width: 819px), (max-aspect-ratio: 4/5) {
+  .dress__sides { display: none; }
+  .fan-stage { padding-top: 16vh; }
+  .fan { --card-w: min(38vw, 22vh); }
+  .dress__head { font-size: clamp(30px, 9.4vw, 60px); }
+  .final__title { font-size: clamp(38px, 12vw, 84px); }
+  .final { padding-top: calc(var(--safe-t) + 12vh); }
+
+/* Невысокий телефон: веер ниже и компактнее, подпись не заходит на карточки */
+@media (max-height: 620px) and (max-aspect-ratio: 4/5) {
+  .fan { --card-w: 20vh; }
+  .fan-stage { padding-top: 22vh; }
+  .dress__copy { padding-top: calc(var(--safe-t) + 8vh); }
+  .dress__look { min-height: 44px; }
+}
+
+/* Низкий экран (телефон лёжа): заголовок компактнее, подпись убираем с пути веера */
+@media (max-height: 500px) {
+  .dress__copy { padding-top: 10px; }
+  .dress__head { font-size: 7.5vh; }
+  .dress__head-line { display: inline-block; margin: 0 0.12em; }
+  .dress__caption { display: none; }
+  .fan-stage { padding-top: 8vh; }
+  .dress__action { padding-bottom: 8px; }
+  .final { padding-top: 56px; }
+}
+
+/* Статичный режим: палитра — ровный ряд, всё идёт обычным потоком */
+.is-static .dress { display: flex; flex-direction: column; padding: 12vh var(--pad) 6vh; overflow: visible; }
+.is-static .dress__copy { order: 1; padding: 0; margin-bottom: 28px; }
+.is-static .fan-flip { width: 100%; }
+.is-static .fan-stage { order: 2; position: static; height: auto; padding: 0; perspective: none; display: block; }
+.is-static .fan { width: 100%; height: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.is-static .fan__card { position: relative; inset: auto; aspect-ratio: 3 / 4; }
+.is-static .dress__action { order: 3; padding: 0; margin-top: 24px; justify-content: center; }
+.is-static .final { order: 4; padding: 0; margin-top: 12vh; }
+.is-static .final__sub { opacity: 1; }
+.is-static .dress__bridge, .is-static .final__photo, .is-static .dress__sides { display: none; }

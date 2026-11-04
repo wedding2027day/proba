@@ -1,0 +1,43 @@
+/* Белое в слое multiply становится окном на то, что лежит ниже, чёрное закрывает.
+   Сцена прозрачна: в начале сквозь цифру видно фото пары из предыдущей сцены. */
+.date__base { position: absolute; inset: 0; background: var(--ivory); opacity: 0; }
+.date__door { position: absolute; inset: 0; visibility: hidden; will-change: transform; }
+.date__char { display: inline-block; font-style: normal; }
+.date__photo { position: absolute; inset: 0; visibility: hidden; }
+.date__mask {
+  position: absolute; inset: 0;
+  background: #000;
+  mix-blend-mode: multiply;
+  will-change: transform;
+  overflow: hidden;
+}
+.date__white { position: absolute; inset: 0; background: #fff; opacity: 0; }
+.date__digit {
+  position: absolute; left: 50%; top: 50%;
+  color: #fff;
+  font-family: var(--font-digits);
+  font-weight: 400;
+  line-height: 0.8;
+  white-space: nowrap;
+  font-variant-numeric: lining-nums;
+  letter-spacing: -0.01em;
+}
+.date__safe { pointer-events: none; }
+.date__caption {
+  position: absolute; left: var(--pad); right: var(--pad);
+  bottom: calc(var(--safe-b) + clamp(10px, 2.2vh, 26px));
+  display: flex; justify-content: space-between; align-items: baseline; gap: 18px; flex-wrap: wrap;
+  color: var(--ivory);
+}
+.date__caption-text { font-family: var(--font-display); font-style: italic; font-size: clamp(17px, 2vw, 25px); line-height: 1.2; }
+.date__count { font-size: 11px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--mute); font-weight: 400; }
+@media (max-aspect-ratio: 4/5) {
+  .date__caption { flex-direction: column; gap: 6px; align-items: center; text-align: center; bottom: calc(var(--safe-b) + 3vh); }
+}
+
+.is-static .date { padding: 12vh var(--pad); text-align: center; background: var(--ink); }
+.is-static .date__base, .is-static .date__white, .is-static .date__door { display: none; }
+.is-static .date__photo { visibility: visible; position: relative; inset: auto; aspect-ratio: 3 / 2; margin-bottom: 28px; }
+.is-static .date__mask { position: static; mix-blend-mode: normal; background: none; overflow: visible; display: flex; justify-content: center; gap: 0.3em; flex-wrap: wrap; font-size: clamp(56px, 14vw, 180px); }
+.is-static .date__digit { position: static; color: var(--ivory); line-height: 1; }
+.is-static .date__caption { position: static; flex-direction: column; align-items: center; margin-top: 18px; }
